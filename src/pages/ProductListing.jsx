@@ -5,8 +5,9 @@ const ProductListing = () => {
     // create an empty array to save products
     const [originalproducts,setOriginalProducts] = useState([]);
     const [products,setproducts] = useState([]);
-    const [isIntersecting, setIsIntersecting] = useState(false);
-    
+    const [isIntersecting, setIsIntersecting] = useState(true);
+    const [hasMoreProducts, setHasMoreProducts] = useState(true);
+    const [nopage,setNoPage] = useState(0);
     const productListRef = useRef(null);
 
 
@@ -17,24 +18,58 @@ const ProductListing = () => {
         .then(res =>{
                 setproducts(res.products)
                 setOriginalProducts(res.products)
+                setNoPage(nopage+1)
+                
             });
-        
+
+
+
+           
     },[])
 
-   
     useEffect(()=>{
-            const observer = new IntersectionObserver((entries)=>{
-                console.log(entries)
-                if(entries[0].isIntersecting){
-                    console.log("somthing happening")
-                }
-             });
 
-     // 5. Start tracking the DOM element
-        if (productListRef.current) {
-        observer.observe(productListRef.current);
-        }
-    },[isIntersecting])
+                // 1. Define configuration options
+            const options = {
+            root: null,       // Use the browser viewport as the container
+            rootMargin: "0px", // Margin around the root
+            threshold: 0.5,   // Trigger when 50% of the element is visible
+            };
+          const observer = new IntersectionObserver((entries)=>{
+               
+                if(entries[0].isIntersecting && hasMoreProducts && isIntersecting ){
+                   
+                    fetch('https://dummyjson.com/products?limit=30&skip='+nopage*30)
+                    .then(res => res.json())
+                    .then(res=>{
+                        console.log(res)
+                         if(res.skip <= res.total){
+                                setproducts([...products,...res.products])
+                                 setNoPage(nopage+1)
+                                 setIsIntersecting(false)
+                            }else{
+                                setHasMoreProducts(false)
+                            }
+                        
+                        // console.log(products)
+                    });
+                    
+                }
+             },options);
+
+             if (productListRef.current) {
+                observer.observe(productListRef.current);
+            }
+        
+
+    },[hasMoreProducts]);
+
+     
+    
+               
+   
+        
+     
    
 
 
@@ -49,7 +84,7 @@ const ProductListing = () => {
             var filteredProducts = [...products].sort((a,b)=>b.price-a.price)
             setproducts(filteredProducts)
         }else{
-            setIsIntersecting(true)
+            
         }
     }
 
@@ -113,7 +148,7 @@ const ProductListing = () => {
                </div>
             ))
           }
-          <p ref={productListRef}> more products</p>
+          <p ref={productListRef}> no more product to show</p>
         </div>
         </div>
         </>
