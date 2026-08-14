@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { Link } from "react-router";
 
 const ProductListing = () => {
 
@@ -124,6 +125,7 @@ const ProductListing = () => {
           {
             products.map(product=>(
                <div className="card my-2 p-4">
+                <Link className="text-dark text-decoration-none" to={"/products/"+product.id}>
                    <div className="row">
                      <div className="col-3">
                         <img src={product.thumbnail}/>  
@@ -145,6 +147,7 @@ const ProductListing = () => {
                           <button className="btn btn-warning">Add to cart</button>
                      </div>
                    </div>
+                   </Link>
                </div>
             ))
           }

@@ -5,6 +5,7 @@ import './App.css';
 import {RouterProvider, createBrowserRouter} from "react-router"
 
 import ProductListing from "./pages/ProductListing";
+import ProductDetailsPage from "./pages/ProductDetailsPage";
 
 const routes = createBrowserRouter([
   {
@@ -17,7 +18,7 @@ const routes = createBrowserRouter([
   },
   {
     path:"/products/:id",
-    element:"this is products details page</h1"
+    element:<ProductDetailsPage/>
   },
   {
     path:"/cart",
