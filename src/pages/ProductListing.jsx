@@ -6,10 +6,9 @@ const ProductListing = () => {
     // create an empty array to save products
     const [originalproducts,setOriginalProducts] = useState([]);
     const [products,setproducts] = useState([]);
-    const [isIntersecting, setIsIntersecting] = useState(true);
-    const [hasMoreProducts, setHasMoreProducts] = useState(true);
-    const [nopage,setNoPage] = useState(0);
-    const productListRef = useRef(null);
+    const targetRefForLazyLoad = useRef(null);
+    const [pageno,setPageNo] = useState(1);
+    const [isIntersecting, setIsIntersecting] = useState(false);
 
 
 
@@ -19,53 +18,44 @@ const ProductListing = () => {
         .then(res =>{
                 setproducts(res.products)
                 setOriginalProducts(res.products)
-                setNoPage(nopage+1)
-                
-            });
-
-
-
-           
+            });       
     },[])
 
-    useEffect(()=>{
+    
 
-                // 1. Define configuration options
-            const options = {
-            root: null,       // Use the browser viewport as the container
-            rootMargin: "0px", // Margin around the root
-            threshold: 0.5,   // Trigger when 50% of the element is visible
-            };
-          const observer = new IntersectionObserver((entries)=>{
-               
-                if(entries[0].isIntersecting && hasMoreProducts && isIntersecting ){
-                   
-                    fetch('https://dummyjson.com/products?limit=30&skip='+nopage*30)
-                    .then(res => res.json())
-                    .then(res=>{
-                        console.log(res)
-                         if(res.skip <= res.total){
-                                setproducts([...products,...res.products])
-                                 setNoPage(nopage+1)
-                                 setIsIntersecting(false)
-                            }else{
-                                setHasMoreProducts(false)
-                            }
-                        
-                        // console.log(products)
-                    });
-                    
-                }
-             },options);
+     useEffect(() => {
+    // 1. Define configuration options
+    const options = {
+      root: null,       // Defaults to the browser viewport
+      rootMargin: '0px', // Margin around the root
+      threshold: 0.2,    // Trigger when 20% of the element is visible
+    };
 
-             if (productListRef.current) {
-                observer.observe(productListRef.current);
-            }
-        
+    // 2. Define the callback executed when visibility changes
+    const callback = (entries) => {
+      const [entry] = entries; 
+      setIsIntersecting(entry.isIntersecting);
+       fetch('https://dummyjson.com/products?limit=30&skip='+pageno*30)
+        .then(res => res.json())
+        .then(res =>{
+            
+                setproducts([...products,...res.products])
+                setPageNo(pageno+1)
+                // setOriginalProducts(res.products)
+            });    
+      
+    };
 
-    },[hasMoreProducts]);
+    // 3. Instantiate the observer
+    const observer = new IntersectionObserver(callback, options);
 
-     
+    // 4. Start observing the target DOM element
+    if (targetRefForLazyLoad.current) {
+      observer.observe(targetRefForLazyLoad.current);
+    }
+
+   
+  }, [setIsIntersecting]); // Empty dependency array ensures observer is created once
     
                
    
@@ -151,7 +141,8 @@ const ProductListing = () => {
                </div>
             ))
           }
-          <p ref={productListRef}> no more product to show</p>
+          {<p className="alert alert-danger" ref={targetRefForLazyLoad}> no more product to show</p>
+          }
         </div>
         </div>
         </>

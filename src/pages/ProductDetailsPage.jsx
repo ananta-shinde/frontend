@@ -6,6 +6,7 @@ const ProductDetailsPage = () => {
     const {id} = useParams();
     const [product,setproduct] = useState({})
     const [previewImage,setPreviewImage] = useState("")
+    const [activeTab,setActiveTab] = useState("specifications")
 
     useEffect(()=>{
         fetch('https://dummyjson.com/products/'+id)
@@ -35,11 +36,65 @@ const ProductDetailsPage = () => {
                     <p>{product.rating}</p>
                     <p>{product.description}</p>
                     <p className="fs-2">${product.price}</p>
+                    <h5 className="text-muted">Hightlights :</h5>
+                    <ul>
+                        <li>product Highlights items</li>
+                        <li>product Highlights items</li>
+                        <li>product Highlights items</li>
+                        <li>product Highlights items</li>
+                        <li>product Highlights items</li>
+                    </ul>
                     <div className="d-flex">
                         <button className="btn btn-warning me-2" style={{flex:1}}>Buy Now</button>
                         <button className="btn btn-outline-dark" style={{flex:1}}>Add To Cart</button>
                     </div>
                 </div>
+            </div>
+            <div className="row border">
+                <ul className="list-unstyled d-flex tab-nav border">
+                    <li className={"mx-2 tab-item "+ ((activeTab == "specifications")?"active text-warning":"")} onClick={()=>{setActiveTab("specifications")}}>specicifactions</li>
+                    <li className={"mx-2 tab-item "+ ((activeTab == "warranty")?"active text-warning":"")} onClick={()=>{setActiveTab("warranty")}}>warranty info</li>
+                    <li className={"mx-2 tab-item "+ ((activeTab == "reviews")?"active text-warning":"")} onClick={()=>{setActiveTab("reviews")}}>reviews</li>
+                </ul>
+                {activeTab == "specifications" && <div className="w-50">
+                    <div className="row border-bottom py-2">
+                        <div className="col-2">Ram</div>
+                        <div className="col">:512GB</div>
+                    </div>
+                    <div className="row border-bottom py-2">
+                        <div className="col-2">Ram</div>
+                        <div className="col">:512GB</div>
+                    </div>
+                    <div className="row border-bottom py-2">
+                        <div className="col-2">Ram</div>
+                        <div className="col">:512GB</div>
+                    </div>
+                    <div className="row border-bottom py-2">
+                        <div className="col-2">Ram</div>
+                        <div className="col">:512GB</div>
+                    </div>
+                    <div className="row border-bottom py-2">
+                        <div className="col-2">Ram</div>
+                        <div className="col">:512GB</div>
+                    </div>
+                    <div className="row border-bottom py-2">
+                        <div className="col-2">Ram</div>
+                        <div className="col">:512GB</div>
+                    </div>
+                </div>}
+                { activeTab == "reviews" && <div>
+                    {
+                        product.reviews && product.reviews.map(review=>(
+                            <div className="p-4">
+                                <p className="fw-bold">{review.reviewerName}</p>
+                                <p>{review.rating}</p>
+                                <p>{review.comment}</p>
+                                <p>{review.date}</p>
+                                <hr></hr>
+                            </div>
+                        ))
+                    }
+                </div>}
             </div>
         </div>
      );

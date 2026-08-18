@@ -1,3 +1,25 @@
+
+*{
+    margin: 0;
+    padding: 0;
+}
+
 .scollbar-hide::-webkit-scrollbar{
     display: none;
+}
+
+.tab-item{
+    padding: 1rem 3rem;
+    font-size: 1.2rem;
+    margin: 0;
+}
+.tab-nav{
+    margin: 0;
+    padding: 0;
+}
+
+.tab-item.active{
+    border: 1px solid;
+    border-bottom: 0;
+    
 }
