@@ -8,7 +8,7 @@ const ProductDetailsPage = () => {
     const [product,setproduct] = useState({})
     const [previewImage,setPreviewImage] = useState("")
     const [activeTab,setActiveTab] = useState("specifications")
-    const {cartProducts,setCartProducts} = useContext(CartContext)
+    const {cartproducts,setCartProducts} = useContext(CartContext)
 
     useEffect(()=>{
         fetch('https://dummyjson.com/products/'+id)
@@ -49,7 +49,7 @@ const ProductDetailsPage = () => {
                     </ul>
                     <div className="d-flex">
                         <button className="btn btn-warning me-2" style={{flex:1}}>Buy Now</button>
-                        <button className="btn btn-outline-dark" style={{flex:1}} onClick={()=>{setCartProducts([...cartProducts,product])}}>Add To Cart</button>
+                        <button className="btn btn-outline-dark" style={{flex:1}} onClick={()=>{setCartProducts([...cartproducts,product])}}>Add To Cart</button>
                     </div>
                 </div>
             </div>

@@ -1,12 +1,15 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { CartContext } from "../context/CartProvider";
 
 const CartDetailPage = () => {
     const {cartproducts} = useContext(CartContext)
+    
+   
     return ( <>
-        {
-           cartproducts && cartproducts[0].title
-        }
+    
+         {
+            cartproducts.map(product=>(<h1>{product.title}</h1>))
+         }
     </> );
 }
  

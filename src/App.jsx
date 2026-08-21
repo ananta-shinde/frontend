@@ -8,6 +8,7 @@ import ProductListing from "./pages/ProductListing";
 import ProductDetailsPage from "./pages/ProductDetailsPage";
 import {CartProvider} from "./context/CartProvider";
 import CartDetailPage from "./pages/CartDetailPage";
+import { useState } from "react";
 
 const routes = createBrowserRouter([
   {
@@ -20,11 +21,11 @@ const routes = createBrowserRouter([
   },
   {
     path:"/products/:id",
-    element:<CartProvider><ProductDetailsPage/></CartProvider>
+    element:<ProductDetailsPage/>
   },
   {
     path:"/cart",
-    element:<CartProvider><CartDetailPage/></CartProvider>
+    element:<CartDetailPage/>
   },
 
 ])
@@ -32,10 +33,15 @@ const routes = createBrowserRouter([
 
 function App() {
   
+   const [cartProducts,setCartProducts] = useState([]);
 
   return (
     <>
+    <CartProvider cartproducts={cartProducts} setCartProducts={setCartProducts}>
      <RouterProvider router={routes}/>
+     {/* <CartDetailPage/> */}
+     </CartProvider>
+     
     </>
   )
   
