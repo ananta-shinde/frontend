@@ -49,7 +49,7 @@ const ProductDetailsPage = () => {
                     </ul>
                     <div className="d-flex">
                         <button className="btn btn-warning me-2" style={{flex:1}}>Buy Now</button>
-                        <button className="btn btn-outline-dark" style={{flex:1}} onClick={()=>{setCartProducts([...cartproducts,product])}}>Add To Cart</button>
+                        <button className="btn btn-outline-dark" style={{flex:1}} onClick={()=>{setCartProducts([...cartproducts,product.id])}}>Add To Cart</button>
                     </div>
                 </div>
             </div>
