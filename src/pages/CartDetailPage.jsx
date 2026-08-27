@@ -15,14 +15,16 @@ const CartDetailPage = () => {
                 response = await response.json()  
                 // response = {...response,qty:item.qty}
                 response.qty = item.qty
-                // setTotal(((response.qty*response.price)))
+                
                 return response
             })
 
             const result = await Promise.all(fetchPromises);
-            console.log(result)
+            
             setProducts(result)
 
+            const finalTotal = result.reduce((sum,item)=>sum+(item.qty*item.price),0)
+            setTotal(finalTotal)
         }
 
         fetchData()

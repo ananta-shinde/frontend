@@ -23,6 +23,21 @@ const ProductDetailsPage = () => {
             // console.log(event.target.src)
             setPreviewImage(event.target.src)
     }
+
+    const handleAddToCart = (id)=>{
+        const isExist = cartproducts.some(product=>product.id == id);
+            if(isExist){
+                    cartproducts.map(product=> {
+                        if(product.id == id){
+                            product.qty = product.qty +1
+                        }
+                    })
+                    setCartProducts(cartproducts)
+            }else{
+                setCartProducts([...cartproducts,{id:product.id,qty:1}])
+            }
+        }
+        
     return ( 
         <div className="container">
             <Link to="/cart">go to cart</Link>
@@ -49,7 +64,7 @@ const ProductDetailsPage = () => {
                     </ul>
                     <div className="d-flex">
                         <button className="btn btn-warning me-2" style={{flex:1}}>Buy Now</button>
-                        <button className="btn btn-outline-dark" style={{flex:1}} onClick={()=>{setCartProducts([...cartproducts,{id:product.id,qty:1}])}}>Add To Cart</button>
+                        <button className="btn btn-outline-dark" style={{flex:1}} onClick={()=>handleAddToCart(product.id)}>Add To Cart</button>
                     </div>
                 </div>
             </div>
