@@ -9,6 +9,10 @@ import ProductDetailsPage from "./pages/ProductDetailsPage";
 import {CartProvider} from "./context/CartProvider";
 import CartDetailPage from "./pages/CartDetailPage";
 import { useState } from "react";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import ProductManagement from "./pages/admin/ProductManagement";
+import AddNewProduct from "./pages/admin/products/AddNewProduct";
+import ProductDataList from "./pages/admin/products/ProductDataList";
 
 const routes = createBrowserRouter([
   {
@@ -26,6 +30,27 @@ const routes = createBrowserRouter([
   {
     path:"/cart",
     element:<CartDetailPage/>
+  },
+  {
+    path:"/admin/dashboard/",
+    element:<AdminDashboard/>,
+    children:[
+      {
+        path:"products/",
+        element:<ProductManagement/>,
+        children:[
+            {
+              path:"new",
+              element:<AddNewProduct/>
+            },
+            {
+              path:"",
+              element:<ProductDataList/>
+            }
+        ]
+      },
+      
+    ]
   },
 
 ])
